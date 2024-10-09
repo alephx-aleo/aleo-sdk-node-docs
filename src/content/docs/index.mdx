@@ -1,0 +1,75 @@
+---
+title: Aleo Program Execution in Node.js
+description: Bring Aleo program execution to Node.js
+template: splash
+hero:
+  title: Aleo SDK Node
+  tagline: Execute Aleo programs in Node.js. Simple and easy-to-use.
+  image:
+    dark: ../../assets/badge-dark.svg
+    light: ../../assets/badge-light.svg
+  actions:
+    - text: Get Started
+      link: /start-here/quickstart/
+      icon: right-arrow
+    - text: View on GitHub
+      link: https://github.com/alephx-aleo/aleo-sdk-node
+      icon: external
+      variant: minimal
+      attrs:
+        rel: me
+---
+
+## Quick Start
+
+Install the package by running the following command in your terminal:
+
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+
+<Tabs>
+	<TabItem label="npm">
+		```bash
+		npm install aleo-sdk-node
+		```
+	</TabItem>
+	<TabItem label="pnpm">
+		```bash 
+		pnpm add aleo-sdk-node 
+		```
+	</TabItem>
+	<TabItem label="yarn">
+		```bash 
+		yarn add aleo-sdk-node 
+		```
+	</TabItem>
+</Tabs>
+
+To build an Aleo execution transaction, call `loadProgramKeys` to load the program keys, then build the execution transaction. Make sure you include `main.aleo` and `program.json` of your contract in the same directory.
+
+```ts
+await loadProgramKeys();
+const execution = await buildExecutionTransaction({
+    privateKey: process.env.PRIVATE_KEY,
+    endpoint: "https://api.explorer.provable.com/v1",
+    functionName: "hello",
+    inputs: [
+        "5u32",
+        "5u32"
+    ],
+    programId: "hello_hello.aleo",
+    priorityFee: BigInt(0),
+    baseFee: BigInt(11323),
+});
+```
+
+Congratulations! You've ran your first Aleo program execution in Node.js. The return object can then be used to broadcast to the network.
+
+```ts
+fetch('https://api.explorer.provable.com/v1/testnet/transaction/broadcast', {
+    body: execution.transaction,
+    method: 'POST',
+    headers: {
+        "Content-Type": "application/json"
+    }
+});
+```

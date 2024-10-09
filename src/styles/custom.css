@@ -1,0 +1,7 @@
+[data-theme="dark"]:root .site-title {
+    color: #F5F5F5;
+}
+
+[data-theme="light"]:root .site-title {
+    color: #121212;
+}
