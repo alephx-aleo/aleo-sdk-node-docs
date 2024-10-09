@@ -1,8 +1,9 @@
 name: GitHub Pages - Deploy
 
 permissions:
-  pages: write      # to deploy to Pages
-  id-token: write   # to verify the deployment originates from an appropriate source
+  contents: read
+  pages: write
+  id-token: write
 
 on:
   push:
@@ -10,11 +11,7 @@ on:
       - main
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -31,7 +28,20 @@ jobs:
     
       - name: Build
         run: npm run build
-      
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./dist/"
+
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
