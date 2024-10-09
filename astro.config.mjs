@@ -4,6 +4,8 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
+	site: 'https://alephx-aleo.github.io',
+	base: 'aleo-sdk-node-docs',
 	integrations: [
 		starlight({
 			title: 'Aleo SDK Node',
